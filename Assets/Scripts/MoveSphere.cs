@@ -6,30 +6,64 @@ public class MoveSphere : MonoBehaviour
 {
 
     private Rigidbody rb;
-    public float speed;// MetersPerFrame;
+    public float peakVel;// MetersPerFrame;
     public float distanceInMeters;
-    private float speedMetersPerSec;
+    public float timeLength;
+    private float startTime;
+    private bool flag;
+    private float halfTime;
 
     // Start is called before the first frame update
     void Start()
     {
+        flag = false;
         rb = GetComponent<Rigidbody>();
-        // 1cup flour, 1 tsp salt, 2/3 milk, 2 eggs
+        halfTime = timeLength / 2;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        //speedMetersPerSec = speedMetersPerFrame * Time.deltaTime;
+        if (Input.GetKeyDown("space") & !flag)
+        {
+            flag = true;
+            if (flag)
+            {
+                StartCoroutine(MoverFwd());
+            }
+        }
+    }
 
-        float mH = Input.GetAxis("Horizontal") * speed;
-        float mV = Input.GetAxis("Vertical") * speed;
+    private IEnumerator MoverFwd()
+    {
+        
+        float elapsedTime = 0;
 
-        //mH *= Time.deltaTime;
-        //mV *= Time.deltaTime;
+        while (elapsedTime < halfTime)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, Mathf.SmoothStep(0, peakVel, elapsedTime / halfTime));
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
 
-        //transform.Translate(mH, 0, mV);
+        rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, peakVel);
+        yield return StartCoroutine(MoveBkd());
+    }
 
-        rb.velocity = new Vector3(mH * speed, rb.velocity.y, mV * speed);
+    private IEnumerator MoveBkd()
+    {
+        float elapsedTime = 0;
+
+        elapsedTime = 0;
+
+        while (elapsedTime < halfTime)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, Mathf.SmoothStep(peakVel, 0, elapsedTime / halfTime));
+
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        flag = false;
     }
 }
