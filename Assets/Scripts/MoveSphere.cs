@@ -6,8 +6,7 @@ public class MoveSphere : MonoBehaviour
 {
 
     private Rigidbody rb;
-    public float peakVel;// MetersPerFrame;
-    public float distanceInMeters;
+    public float peakVel;    // MetersPerSecond;
     public float timeLength;
     private float startTime;
     private bool flag;
@@ -31,6 +30,22 @@ public class MoveSphere : MonoBehaviour
             {
                 StartCoroutine(MoverFwd());
             }
+        }
+
+        if (Input.GetKeyDown("m"))
+        {
+            transform.eulerAngles = new Vector3(0f, 0f, transform.eulerAngles.z + 0.01f);
+            //rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, 4.0f);
+        }
+
+        if (Input.GetKeyDown("n"))
+        {
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, rb.velocity.z + 0.01f);
+        }
+
+        if (Input.GetKeyDown("b"))
+        {
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, rb.velocity.z - 0.01f);
         }
     }
 

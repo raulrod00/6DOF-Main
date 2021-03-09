@@ -30,7 +30,7 @@ public class UdpOutSim : MonoBehaviour {
 	//-----------------------------------------------------------
 	// Public Vars
 	//-----------------------------------------------------------
-	public string ipString = "192.168.1.101";// Motion box IP is 192.168.15.201? What's App
+	public string ipString = "192.168.15.201";// test ip"192.168.1.101";// Motion box IP is 192.168.15.201? What's App
 
 	//-----------------------------------------------------------
 	// Private Vars
@@ -61,13 +61,14 @@ public class UdpOutSim : MonoBehaviour {
 
 		// Udp Socket 
 		UdpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-
+		// Raul UdpSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, 1);
+		
 		// Get RigidBodgy Component
 		rb = GetComponent<Rigidbody> ();
-
 		// OutSimData Initialize
 		OutSimDataUtils.OutSimData_Init ();
 
+		//Debug.Log(rb); // Raul
 	} // End: void Start () 
 		
 
@@ -80,7 +81,9 @@ public class UdpOutSim : MonoBehaviour {
 		OutSimDataUtils.BodyVelocity 	 = rb.velocity;
 		OutSimDataUtils.BodyEulerAngles  = transform.eulerAngles;
 
-		Debug.Log(OutSimDataUtils.BodyVelocity); // Raul
+		//Debug.Log(OutSimDataUtils.BodyVelocity); // Raul
+		//Debug.Log(OutSimDataUtils.BodyEulerAngles); // Raul
+		
 		// OutSimData Update
 		OutSimDataUtils.OutSimData_Update();
 
@@ -89,7 +92,22 @@ public class UdpOutSim : MonoBehaviour {
 		byte[] UdpSendByte = OutSimDataUtils.GameSimData.GetBytes();
 
 		// Transmit Udp Send Message
-		UdpSocket.SendTo(UdpSendByte, UdpSendByte.Length, SocketFlags.None, IpEndHost);
+		try
+
+		{
+
+			UdpSocket.SendTo(UdpSendByte, UdpSendByte.Length, SocketFlags.None, IpEndHost);
+
+		}
+
+		catch (SocketException err)
+
+		{
+
+			Debug.Log("Send failed: " + err.Message);
+
+		}
+		
 
 	}
 	//===========================================================
