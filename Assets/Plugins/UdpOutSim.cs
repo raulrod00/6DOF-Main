@@ -10,6 +10,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -63,11 +64,13 @@ public class UdpOutSim : MonoBehaviour {
 		UdpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 		// Raul UdpSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, 1);
 		
-		// Get RigidBodgy Component
+		// Get RigidBody Component
 		rb = GetComponent<Rigidbody> ();
+
+		//OutSimDataUtils.GameSimData_Init();
 		// OutSimData Initialize
 		OutSimDataUtils.OutSimData_Init ();
-
+		//UdpSocket.Connect(IpEndHost);
 		//Debug.Log(rb); // Raul
 	} // End: void Start () 
 		
@@ -91,11 +94,13 @@ public class UdpOutSim : MonoBehaviour {
 		// Get Udp Send Message
 		byte[] UdpSendByte = OutSimDataUtils.GameSimData.GetBytes();
 
+		File.WriteAllBytes("dog.txt", UdpSendByte);
+
 		// Transmit Udp Send Message
 		try
 
 		{
-
+			
 			UdpSocket.SendTo(UdpSendByte, UdpSendByte.Length, SocketFlags.None, IpEndHost);
 
 		}

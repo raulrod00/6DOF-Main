@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b935343590ba5444a8e18a5c332b79f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  peakVel: 40
+  peakVel: 2
   timeLength: 4
 --- !u!135 &923257189
 SphereCollider:
@@ -348,7 +348,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 923257186}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3f9fe0b9aec66e469efce91186ef9d3, type: 3}
+  m_Script: {fileID: 11500000, guid: be77c4c04a09a2d4796b74899304850c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ipString: 192.168.15.201
