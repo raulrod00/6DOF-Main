@@ -86,6 +86,8 @@ public class NewUDP : MonoBehaviour
         }
     }
 
+	string filename = "dog2.txt";
+	StreamWriter sr;
 
 	void Start()
 	{
@@ -93,6 +95,8 @@ public class NewUDP : MonoBehaviour
 		rb = GetComponent<Rigidbody>();
 		// OutSimData Initialize
 		OutSimDataUtils.OutSimData_Init();
+
+		sr = File.CreateText(filename);
 
 	} // End: void Start () 
 
@@ -108,10 +112,15 @@ public class NewUDP : MonoBehaviour
 	//-----------------------------------------------------------
 	void Update()
 	{
-
+		
 		// Get Target Body Velocity & EulerAngles
 		OutSimDataUtils.BodyVelocity = rb.velocity;
 		OutSimDataUtils.BodyEulerAngles = transform.eulerAngles;
+
+		sr.Write(rb.velocity);
+		sr.Write(" ");
+		sr.Write(transform.eulerAngles);
+		sr.Write("\n");
 
 		//Debug.Log(OutSimDataUtils.BodyVelocity); // Raul
 		//Debug.Log(OutSimDataUtils.BodyEulerAngles); // Raul
@@ -123,8 +132,8 @@ public class NewUDP : MonoBehaviour
 
         // Get Udp Send Message
         byte[] dg = OutSimDataUtils.GameSimData.GetBytes();
-		dg[0] = 255;
-		dg[1] = 255;
+		//dg[0] = 255;
+		//dg[1] = 255;
 		//Debug.Log(dg[0]);
         AppendAllBytes("dog.txt", dg);
 
